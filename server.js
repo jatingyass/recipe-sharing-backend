@@ -12,10 +12,11 @@ app.use(express.json());
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
-
+const recipeRoutes = require('./routes/recipeRoutes');
 
 // Use routes
 app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipeRoutes);
 
 // Default route
 app.get('/', (req, res) => {
