@@ -15,7 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
+    image: {
+     type: DataTypes.STRING,
+     allowNull: true
+}
+
   });
 
   return Recipe;

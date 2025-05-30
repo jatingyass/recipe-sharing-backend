@@ -2,12 +2,14 @@ const {Recipe} = require('../models');
 
 exports.createRecipe = async (req, res) => {
   const { title, ingredients, instructions } = req.body;
+  const image = req.file ? req.file.filename : null;
 
   try {
     const recipe = await Recipe.create({
       title,
       ingredients,
       instructions,
+      image,
       userId: req.user.id // from token
     });
 
