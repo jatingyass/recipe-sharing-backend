@@ -48,3 +48,25 @@ exports.deleteRecipe = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+exports.updateRecipe = async (req, res) => {
+  const { id } = req.params;
+  const { title, ingredients, instructions } = req.body;
+
+  try {
+    const recipe = await Recipe.findOne({ where: { id, userId: req.user.id } });
+
+    if (!recipe) return res.status(404).json({ message: 'Recipe not found or unauthorized' });
+
+    recipe.title = title || recipe.title;
+    recipe.ingredients = ingredients || recipe.ingredients;
+    recipe.instructions = instructions || recipe.instructions;
+
+    await recipe.save();
+
+    res.json({ message: 'Recipe updated', recipe });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
