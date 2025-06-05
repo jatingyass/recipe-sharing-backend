@@ -15,10 +15,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Import routes
 const userRoutes = require('./routes/userRoutes');
 const recipeRoutes = require('./routes/recipeRoutes');
+const favoriteRoutes = require('./routes/favoritesRoutes');
 
 // Use routes
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 // Default route
 app.get('/', (req, res) => {
