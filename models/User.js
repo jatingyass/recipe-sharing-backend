@@ -19,6 +19,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    role: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'user' // or 'admin'
+    }
+
   });
 
   return User;

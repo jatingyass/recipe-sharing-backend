@@ -36,20 +36,29 @@ exports.getUserRecipes = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 exports.deleteRecipe = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const recipe = await Recipe.findOne({ where: { id, userId: req.user.id } });
-    if (!recipe) return res.status(404).json({ message: 'Recipe not found or unauthorized' });
+    const recipe = await Recipe.findByPk(id);
+
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    // Admin can delete anything; user can delete only their own
+    if (req.user.role !== 'admin' && recipe.userId !== req.user.id) {
+      return res.status(403).json({ message: 'Unauthorized access' });
+    }
 
     await recipe.destroy();
-    res.json({ message: 'Recipe deleted' });
+    res.status(200).json({ message: 'Recipe deleted successfully' });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 exports.updateRecipe = async (req, res) => {
