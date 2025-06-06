@@ -9,6 +9,7 @@ const CollectionModel = require('./collections');
 const CollectionRecipeModel = require('./collectionrecipes');
 const ReviewModel = require('./review');
 const RatingModel = require('./rating');
+const FollowModel = require('./follow');
 
 // Initialize models
 const User = UserModel(sequelize, Sequelize.DataTypes);
@@ -18,6 +19,7 @@ const Collection = CollectionModel(sequelize, Sequelize.DataTypes);
 const CollectionRecipe = CollectionRecipeModel(sequelize, Sequelize.DataTypes);
 const Review = ReviewModel(sequelize, Sequelize.DataTypes);
 const Rating = RatingModel(sequelize, Sequelize.DataTypes);
+const Follow = FollowModel(sequelize, Sequelize.DataTypes);
 
 // Associations
 
@@ -55,6 +57,17 @@ Rating.belongsTo(User, { foreignKey: "userId" });
 Recipe.hasMany(Rating, { foreignKey: "recipeId" });
 Rating.belongsTo(Recipe, { foreignKey: "recipeId" });
 
+//Follow
+User.hasMany(Follow, { foreignKey: "followerId", as: "Following" });
+User.hasMany(Follow, { foreignKey: "followingId", as: "Followers" });
+
+Follow.belongsTo(User, { foreignKey: "followerId", as: "Follower" });
+Follow.belongsTo(User, { foreignKey: "followingId", as: "FollowingUser" });
+
+// Recipes
+User.hasMany(Recipe, { foreignKey: "userId" });
+Recipe.belongsTo(User, { foreignKey: "userId" });
+
 // Export everything
 module.exports = {
   sequelize,
@@ -65,5 +78,6 @@ module.exports = {
   Collection,
   CollectionRecipe,
   Review,
-  Rating
+  Rating,
+  Follow
 };

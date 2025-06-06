@@ -18,6 +18,8 @@ const recipeRoutes = require('./routes/recipeRoutes');
 const favoriteRoutes = require('./routes/favoritesRoutes');
 const collectionRoutes = require('./routes/collectionsRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const followRoutes = require('./routes/followRoutes');
+const activityRoutes = require('./routes/activityRoutes');
 
 
 // Use routes
@@ -26,6 +28,9 @@ app.use('/api/recipes', recipeRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/follow', followRoutes);
+app.use('/api/activity', activityRoutes);
+
 
 // Default route
 app.get('/', (req, res) => {
