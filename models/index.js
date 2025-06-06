@@ -1,5 +1,3 @@
-// models/index.js
-
 const Sequelize = require('sequelize');
 const sequelize = require('../config/db');
 
@@ -9,6 +7,8 @@ const RecipeModel = require('./Recipe');
 const FavoriteModel = require('./favorites');
 const CollectionModel = require('./collections');
 const CollectionRecipeModel = require('./collectionrecipes');
+const ReviewModel = require('./review');
+const RatingModel = require('./rating');
 
 // Initialize models
 const User = UserModel(sequelize, Sequelize.DataTypes);
@@ -16,23 +16,22 @@ const Recipe = RecipeModel(sequelize, Sequelize.DataTypes);
 const Favorite = FavoriteModel(sequelize, Sequelize.DataTypes);
 const Collection = CollectionModel(sequelize, Sequelize.DataTypes);
 const CollectionRecipe = CollectionRecipeModel(sequelize, Sequelize.DataTypes);
+const Review = ReviewModel(sequelize, Sequelize.DataTypes);
+const Rating = RatingModel(sequelize, Sequelize.DataTypes);
 
+// Associations
 
-// Define associations here if needed in future
-// Example: User.hasMany(Post); // etc.
-
-// Define associations
+// Favorites
 User.hasMany(Favorite, { foreignKey: "userId" });
 Favorite.belongsTo(User, { foreignKey: "userId" });
 
 Recipe.hasMany(Favorite, { foreignKey: "recipeId" });
 Favorite.belongsTo(Recipe, { foreignKey: "recipeId" });
 
-// ✅ Collection belongs to User
+// Collections
 User.hasMany(Collection, { foreignKey: "userId" });
 Collection.belongsTo(User, { foreignKey: "userId" });
 
-// ✅ Many-to-Many: Collections <-> Recipes
 Collection.belongsToMany(Recipe, {
   through: CollectionRecipe,
   foreignKey: "collectionId"
@@ -42,8 +41,21 @@ Recipe.belongsToMany(Collection, {
   foreignKey: "recipeId"
 });
 
+// ⭐ Reviews
+User.hasMany(Review, { foreignKey: "userId" });
+Review.belongsTo(User, { foreignKey: "userId" });
 
-// Export all models + sequelize instance
+Recipe.hasMany(Review, { foreignKey: "recipeId" });
+Review.belongsTo(Recipe, { foreignKey: "recipeId" });
+
+// ⭐ Ratings
+User.hasMany(Rating, { foreignKey: "userId" });
+Rating.belongsTo(User, { foreignKey: "userId" });
+
+Recipe.hasMany(Rating, { foreignKey: "recipeId" });
+Rating.belongsTo(Recipe, { foreignKey: "recipeId" });
+
+// Export everything
 module.exports = {
   sequelize,
   Sequelize,
@@ -51,6 +63,7 @@ module.exports = {
   Recipe,
   Favorite,
   Collection,
-  CollectionRecipe
-
+  CollectionRecipe,
+  Review,
+  Rating
 };

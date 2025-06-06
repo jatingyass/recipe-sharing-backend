@@ -17,6 +17,7 @@ const userRoutes = require('./routes/userRoutes');
 const recipeRoutes = require('./routes/recipeRoutes');
 const favoriteRoutes = require('./routes/favoritesRoutes');
 const collectionRoutes = require('./routes/collectionsRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 
 // Use routes
@@ -24,6 +25,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/collections', collectionRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Default route
 app.get('/', (req, res) => {
