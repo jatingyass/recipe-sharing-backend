@@ -20,6 +20,7 @@ const collectionRoutes = require('./routes/collectionsRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const followRoutes = require('./routes/followRoutes');
 const activityRoutes = require('./routes/activityRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 
 // Use routes
@@ -30,6 +31,7 @@ app.use('/api/collections', collectionRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/follow', followRoutes);
 app.use('/api/activity', activityRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 // Default route
