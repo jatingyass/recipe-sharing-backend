@@ -15,13 +15,26 @@ exports.addFavorite = async (req, res) => {
   }
 };
 
+
 exports.getFavorites = async (req, res) => {
   try {
-    const favorites = await Favorite.findAll({
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await Favorite.findAndCountAll({
       where: { userId: req.user.id },
-      include: "Recipe"
+      include: "Recipe",
+      limit,
+      offset
     });
-    res.json(favorites);
+
+    res.status(200).json({
+      total: count,
+      page,
+      pageCount: Math.ceil(count / limit),
+      favorites: rows
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

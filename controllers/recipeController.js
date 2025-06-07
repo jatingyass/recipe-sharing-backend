@@ -19,14 +19,30 @@ exports.createRecipe = async (req, res) => {
   }
 };
 
+
 exports.getAllRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.findAll();
-    res.json(recipes);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await Recipe.findAndCountAll({
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]]
+    });
+
+    res.status(200).json({
+      total: count,
+      page,
+      pageCount: Math.ceil(count / limit),
+      recipes: rows
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.getUserRecipes = async (req, res) => {
   try {
